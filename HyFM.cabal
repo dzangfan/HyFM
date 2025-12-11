@@ -32,7 +32,7 @@ library
 
 common test-opts
     ghc-options: -O2 -ddump-simpl -dsuppress-all -ddump-to-file
-                 -fspec-constr-keen -fspecialise-aggressively
+                 -fspecialise-aggressively
 
 test-suite HyFM-FW-TestSt0
     import:           warnings, test-opts
