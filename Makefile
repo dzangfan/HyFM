@@ -6,6 +6,14 @@ all: build
 build:
 	cabal build
 
+test: testSt0
+
+bench: benSt0PrStat benSt0MonStat benSt0PrComp benSt0MonComp
+
+clean:
+	cabal clean
+	rm -rf $(BENCHDIR)
+
 testSt0:
 	cabal test HyFM-FW-TestSt0 --test-show-details=streaming
 
@@ -28,7 +36,3 @@ benSt0MonComp:
 	mkdir -p $(BENCHDIR)
 	cabal test HyFM-FW-BenSt0MonComp \
 	--test-options="--output=$(BENCHDIR)/BenSt0MonComp.html"
-
-clean:
-	cabal clean
-	rm -rf $(BENCHDIR)
