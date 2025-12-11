@@ -10,6 +10,7 @@ import FloydWarshall
 type FW  = Vector Int -> Int
 type FW' = Vector (InfNum Int) -> InfNum Int
 
+
 fw1 :: FW'
 fw1 = $(compile₀ mat1 st1)
 
@@ -38,3 +39,10 @@ fwP3 = $(compile mat3 st3 fwComp₁)
 
 fwPM3 :: FW
 fwPM3 = $(compile mat3 st3 fwComp₃)
+
+
+fwP4 :: FW
+fwP4 = $(compile mat4 st4 fwComp₁)
+
+fwPM4 :: FW
+fwPM4 = $(compile mat4 st4 fwComp₃)

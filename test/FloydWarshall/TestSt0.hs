@@ -73,3 +73,25 @@ main = hspec $ do
         e₁ <- runQ $ compile mat3 st3 fwComp₃
         e₂ <- runQ $ compile mat3 st3 fwComp₄
         pprint e₁ `shouldBe` pprint e₂
+
+  context "For matrix 4 (7 × 7)" $ do
+    describe "stat (pure)" $ do
+      it "can count (min, +) with fusion" $ do
+        stat mat4 st4 fwStat₁ `shouldBe` (21, 32)
+      it "can count (min, +) without fusion" $ do
+        stat mat4 st4 fwStat₂ `shouldBe` (21, 32)
+    describe "stat (monadic)" $ do
+      it "can count (min, +) with fusion" $ do
+        stat mat4 st4 fwStat₃ `shouldBe` (10, 15)
+      it "can count (min, +) without fusion" $ do
+        stat mat4 st4 fwStat₄ `shouldBe` (10, 15)
+    describe "compile (pure)" $ do
+      it "generates the same code regardless of fusion" $ do
+        e₁ <- runQ $ compile mat4 st4 fwComp₁
+        e₂ <- runQ $ compile mat4 st4 fwComp₂
+        pprint e₁ `shouldBe` pprint e₂
+    describe "compile (monadic)" $ do
+      it "generates the same code regardless of fusion" $ do
+        e₁ <- runQ $ compile mat4 st4 fwComp₃
+        e₂ <- runQ $ compile mat4 st4 fwComp₄
+        pprint e₁ `shouldBe` pprint e₂

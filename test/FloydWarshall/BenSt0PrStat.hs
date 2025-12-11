@@ -16,4 +16,7 @@ main = defaultMain
   , bgroup "mat3"
     [ bench "F"  (whnf (stat mat3 st3) fwStat₁)
     , bench "NF" (whnf (stat mat3 st3) fwStat₂) ]
+  , bgroup "mat4"
+    [ bench "F"  (whnf (stat mat4 st4) fwStat₁)
+    , bench "NF" (whnf (stat mat4 st4) fwStat₂) ]
   ]

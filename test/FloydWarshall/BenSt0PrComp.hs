@@ -18,6 +18,9 @@ main = defaultMain
   , bgroup "mat3"
     [ bench "F"  (nfIO (measureExp $ compile mat3 st3 fwComp₁))
     , bench "NF" (nfIO (measureExp $ compile mat3 st3 fwComp₂)) ]
+  , bgroup "mat4"
+    [ bench "F"  (nfIO (measureExp $ compile mat4 st4 fwComp₁))
+    , bench "NF" (nfIO (measureExp $ compile mat4 st4 fwComp₂)) ]
   ]
 
 measureSize :: Data a => a -> Int

@@ -8,7 +8,7 @@ build:
 
 test: testSt0 testSt1
 
-bench: benSt0PrStat benSt0MonStat benSt0PrComp benSt0MonComp
+bench: benSt0PrStat benSt0MonStat benSt0PrComp benSt0MonComp benSt1
 
 clean:
 	cabal clean

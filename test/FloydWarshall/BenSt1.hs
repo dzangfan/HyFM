@@ -23,4 +23,7 @@ main = defaultMain
     [ bench "FW"        (whnf fw3   (fromList (Num <$> listOf 8)))
     , bench "FW (P)"    (whnf fwP3  (fromList (listOf 8)))
     , bench "FW (P, M)" (whnf fwPM3 (fromList (listOf 8)))]
+  , bgroup "mat4"
+    [ bench "FW (P)"    (whnf fwP4  (fromList (listOf 20)))
+    , bench "FW (P, M)" (whnf fwPM4 (fromList (listOf 20)))]
   ]
