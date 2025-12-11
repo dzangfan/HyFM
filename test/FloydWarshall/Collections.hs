@@ -31,10 +31,14 @@ st3 :: (Int, Int)
 st3 = (1, 7)
 
 mat4 :: Matrix Bool
-mat4 = matrix 16 16 $ \case
-  (1, 5) -> True; (5, 9) -> True; (9, 10) -> True
-  (10, 14) -> True; (14, 15) -> True; (15, 11) -> True; (11, 10) -> True
-  (11, 12) -> True; (12, 8) -> True; (8, 4) -> True
+mat4 = matrix 9 9 $ \case
+  (1, 2) -> True; (1, 4) -> True; (1, 5) -> True
+  (2, 5) -> True; (2, 3) -> True; (2, 6) -> True
+  (3, 5) -> True; (3, 6) -> True
+  (4, 5) -> True; (4, 7) -> True; (4, 8) -> True
+  (5, 8) -> True; (5, 6) -> True; (5, 9) -> True
+  (6, 8) -> True; (6, 9) -> True
+  (7, 8) -> True; (8, 9) -> True
   _ -> False
 st4 :: (Int, Int)
-st4 = (1, 4)
+st4 = (1, 9)

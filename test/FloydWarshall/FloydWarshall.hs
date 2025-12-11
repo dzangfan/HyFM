@@ -3,6 +3,7 @@
 
 module FloydWarshall where
 
+import Control.Applicative
 import Control.Monad
 import Control.Monad.Trans.State
 import Data.Functor
@@ -12,7 +13,8 @@ import Data.Functor.HyFM.Hylos
 import Data.Functor.HyFM.Memo
 import Data.Functor.HyFM.Zoo
 import Data.Functor.Identity
-import Data.Matrix
+import Data.Matrix hiding ((!))
+import Data.Vector ((!))
 import Language.Haskell.TH
 
 data Weight v = Weight v | WeightInf
@@ -78,6 +80,30 @@ termPE = bcataF τ
     {-# INLINE τ #-}
 {-# INLINE termPE #-}
 
+data InfNum a = Num a | Infty deriving (Functor)
+instance Applicative InfNum where
+  Num f <*> Num x = Num (f x)
+  _ <*> _ = Infty
+  pure = Num
+instance Num a => Num (InfNum a) where
+  (+)         = liftA2 (+)
+  (*)         = liftA2 (*)
+  abs         = fmap abs
+  signum      = fmap signum
+  fromInteger = Num . fromInteger
+  negate      = fmap negate
+instance Eq a => Eq (InfNum a) where
+  Num a == Num b = a == b
+  _     == _     = False
+instance Ord a => Ord (InfNum a) where
+  Num a <= Num b = a <= b
+  Num _ <= Infty = True
+  Infty <= Num _ = False
+  Infty <= Infty = False
+instance Show a => Show (InfNum a) where
+  show (Num a) = show a
+  show Infty   = "∞"
+
 termComp :: Hylo (Alg (Q Exp)) (Term (Q Exp)) (Term (Q Exp)) Fix
 termComp = cata φ
   where φ term = case term of
@@ -86,7 +112,7 @@ termComp = cata φ
           Let x h -> [| let g = $x in $(h [|g|]) |]
           Min a b -> [| min $a $b |]
           Add a b -> [| $a + $b |]
-          Inf     -> [| undefined |]
+          Inf     -> [| Infty |]
         {-# INLINE φ #-}
 {-# INLINE termComp #-}
 
@@ -111,7 +137,7 @@ unwrapComp :: PE (Q Exp) (Q Exp) -> Q Exp
 unwrapComp = \case
   Dy e     -> e
   DyAtom e -> e
-  StInf    -> [| undefined |]
+  StInf    -> [| Infty |]
 
 unwrapStat :: PE () (Int, Int) -> (Int, Int)
 unwrapStat = \case
@@ -288,7 +314,7 @@ fwStatPE₄ = runHylo fwStatH₃
 
 fwStatφ₄ :: Term (PE () ()) (PE () (Int, Int)) -> PE () (Int, Int)
 (Alg fwStatφ₄, _) = unHylo fwStatH₃
-  
+
 -- Triggering compiler/counter -------------------------
 
 compile
@@ -313,6 +339,29 @@ stat mat (i, j) s = s weighted (i, j, sqrMatSz mat)
   where weighted = mat <&> \case
           True -> Weight (DyAtom ())
           False -> WeightInf
+
+fwComp₀ :: Matrix (Weight (Q Exp))
+        -> (Int, Int, Int)
+        -> Q Exp
+fwComp₀ mat = runIdentity . runHylo h
+  where
+    h :: Hylo (Alg (Identity (Q Exp)))
+            (Path (Q Exp))
+            (Path (Q Exp))
+            (Coalg (Int, Int, Int))
+    h = termComp ∘ fwCata @(Q Exp) ∘ fwAna mat
+
+compile₀
+  :: Matrix Bool -> (Int, Int) -> Q Exp
+compile₀ mat (i, j) =
+  [| \v -> $(let mat' = evalState (weighted [|v|]) 0
+             in fwComp₀ mat' (i, j, sqrMatSz mat))|]
+  where weighted :: Q Exp -> State Int (Matrix (Weight (Q Exp)))
+        weighted v = forM mat $ \case
+          False -> return WeightInf
+          True  -> do
+            idx <- get; modify succ
+            return (Weight [| $v ! idx |])
 
 sqrMatSz :: Matrix a -> Int
 sqrMatSz mat

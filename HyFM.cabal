@@ -123,3 +123,42 @@ test-suite HyFM-FW-BenSt0MonComp
         matrix ^>=0.3.6.4,
         transformers ^>=0.6.2.0,
         criterion
+
+test-suite HyFM-FW-TestSt1
+    import:           warnings, test-opts
+    default-language: GHC2021
+    other-modules:
+        FloydWarshall,
+        Collections,
+        StagedInstances
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test/FloydWarshall
+    main-is:          TestSt1.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        HyFM,
+        template-haskell ^>=2.19.0.0,
+        vector ^>=0.13.2.0,
+        matrix ^>=0.3.6.4,
+        transformers ^>=0.6.2.0,
+        hspec ^>=2.11.14,
+        QuickCheck ^>=2.16.0.0
+
+test-suite HyFM-FW-BenSt1
+    import:           warnings, test-opts
+    default-language: GHC2021
+    other-modules:
+        FloydWarshall,
+        Collections,
+        StagedInstances
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test/FloydWarshall
+    main-is:          BenSt1.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        HyFM,
+        template-haskell ^>=2.19.0.0,
+        vector ^>=0.13.2.0,
+        matrix ^>=0.3.6.4,
+        transformers ^>=0.6.2.0,
+        criterion

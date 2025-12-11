@@ -6,7 +6,7 @@ all: build
 build:
 	cabal build
 
-test: testSt0
+test: testSt0 testSt1
 
 bench: benSt0PrStat benSt0MonStat benSt0PrComp benSt0MonComp
 
@@ -36,3 +36,11 @@ benSt0MonComp:
 	mkdir -p $(BENCHDIR)
 	cabal test HyFM-FW-BenSt0MonComp \
 	--test-options="--output=$(BENCHDIR)/BenSt0MonComp.html"
+
+testSt1:
+	cabal test HyFM-FW-TestSt1 --test-show-details=streaming
+
+benSt1:
+	mkdir -p $(BENCHDIR)
+	cabal test HyFM-FW-BenSt1 \
+	--test-options="--output=$(BENCHDIR)/BenSt1.html"
