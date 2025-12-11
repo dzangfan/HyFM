@@ -22,8 +22,6 @@ library
         Data.Functor.HyFM.Fusion,
         Data.Functor.HyFM.Zoo,
         Data.Functor.HyFM.Memo
-    -- other-modules:
-    -- other-extensions:
     build-depends:
         base ^>=4.17.2.1,
         transformers ^>=0.6.2.0,
@@ -35,6 +33,24 @@ library
 common test-opts
     ghc-options: -O2 -ddump-simpl -dsuppress-all -ddump-to-file
                  -fspec-constr-keen -fspecialise-aggressively
+
+test-suite HyFM-FW-TestSt0
+    import:           warnings, test-opts
+    default-language: GHC2021
+    other-modules:
+        FloydWarshall,
+        Collections
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test/FloydWarshall
+    main-is:          TestSt0.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        HyFM,
+        template-haskell ^>=2.19.0.0,
+        vector ^>=0.13.2.0,
+        matrix ^>=0.3.6.4,
+        transformers ^>=0.6.2.0,
+        hspec ^>=2.11.14
 
 test-suite HyFM-FW-BenSt0PrStat
     import:           warnings, test-opts
@@ -72,7 +88,7 @@ test-suite HyFM-FW-BenSt0PrComp
         transformers ^>=0.6.2.0,
         criterion
 
-test-suite HyFM-FW-TestSt0Pr
+test-suite HyFM-FW-BenSt0MonStat
     import:           warnings, test-opts
     default-language: GHC2021
     other-modules:
@@ -80,7 +96,7 @@ test-suite HyFM-FW-TestSt0Pr
         Collections
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test/FloydWarshall
-    main-is:          TestSt0Pr.hs
+    main-is:          BenSt0MonStat.hs
     build-depends:
         base ^>=4.17.2.1,
         HyFM,
@@ -88,4 +104,22 @@ test-suite HyFM-FW-TestSt0Pr
         vector ^>=0.13.2.0,
         matrix ^>=0.3.6.4,
         transformers ^>=0.6.2.0,
-        hspec ^>=2.11.14
+        criterion
+
+test-suite HyFM-FW-BenSt0MonComp
+    import:           warnings, test-opts
+    default-language: GHC2021
+    other-modules:
+        FloydWarshall,
+        Collections
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test/FloydWarshall
+    main-is:          BenSt0MonComp.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        HyFM,
+        template-haskell ^>=2.19.0.0,
+        vector ^>=0.13.2.0,
+        matrix ^>=0.3.6.4,
+        transformers ^>=0.6.2.0,
+        criterion

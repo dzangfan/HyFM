@@ -1,2 +1,3 @@
 bench/
-dist-newstyle
+dist-newstyle/
+hie.yaml
