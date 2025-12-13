@@ -16,9 +16,24 @@ instance Fusion
   (Hylo (Alg b) f₄ f₃ Fix) (Hylo (BAlg g f₃) f₂ f₁ coalg)
   (Hylo (Alg (g b)) f₂ f₁ coalg) where
   Hφo (Alg φ) (NT η) ∘ h = case h of
-    Hτψ (BAlg τ) nt coalg -> Hφψ (Alg (τ (φ . η))) nt coalg
-    Hτσ (BAlg τ) nt coalg -> Hφσ (Alg (τ (φ . η))) nt coalg
-    Hτo (BAlg τ) nt       -> Hφo (Alg (τ (φ . η))) nt
+    Hτψ (BAlg τ) nt coalg ->
+      let φ' x = τ φ'' x
+          φ'' x = φ (η x)
+          {-# INLINE φ' #-}
+          {-# INLINE φ'' #-}
+      in Hφψ (Alg φ') nt coalg
+    Hτσ (BAlg τ) nt coalg ->
+      let φ' x = τ φ'' x
+          φ'' x = φ (η x)
+          {-# INLINE φ' #-}
+          {-# INLINE φ'' #-}
+      in Hφσ (Alg φ') nt coalg
+    Hτo (BAlg τ) nt ->
+      let φ' x = τ φ'' x
+          φ'' x = φ (η x)
+          {-# INLINE φ' #-}
+          {-# INLINE φ'' #-}
+      in Hφo (Alg φ') nt
   {-# INLINE (∘) #-}
 -- G〚τ₂ in, η₂, out〛 ∘ 〚τ₁ in, η₁, ψ〛
 instance Functor f₂ =>
@@ -56,9 +71,11 @@ instance Fusion
   (Hylo (Alg b) f₃ f₂ Fix) (Hylo Fix f₂ f₁ coalg)
   (Hylo (Alg b) f₂ f₁ coalg) where
   Hφo (Alg φ) (NT η) ∘ h = case h of
-    Hiψ nt coalg -> Hφψ (Alg (φ . η)) nt coalg
-    Hiσ nt coalg -> Hφσ (Alg (φ . η)) nt coalg
-    Hio nt       -> Hφo (Alg (φ . η)) nt
+    Hiψ nt coalg -> Hφψ (Alg φ') nt coalg
+    Hiσ nt coalg -> Hφσ (Alg φ') nt coalg
+    Hio nt       -> Hφo (Alg φ') nt
+    where φ' x = φ (η x)
+          {-# INLINE φ' #-}
   {-# INLINE (∘) #-}
 -- 〚τ in, η₂, out〛 ∘ 〚in, η₁, ψ〛
 instance Fusion
@@ -77,9 +94,21 @@ instance Fusion
   (Hylo Fix f₃ f₂ Fix) (Hylo Fix f₂ f₁ coalg)
   (Hylo Fix f₃ f₁ coalg) where
   Hio (NT η₂) ∘ h = case h of
-    Hiψ (NT η₁) coalg -> Hiψ (NT (η₂ . η₁)) coalg
-    Hiσ (NT η₁) coalg -> Hiσ (NT (η₂ . η₁)) coalg
-    Hio (NT η₁)       -> Hio (NT (η₂ . η₁))
+    Hiψ (NT η₁) coalg ->
+      let η' :: forall x. f₁ x -> f₃ x
+          η' x = η₂ (η₁ x)
+          {-# INLINE η' #-}
+      in Hiψ (NT η') coalg
+    Hiσ (NT η₁) coalg ->
+      let η' :: forall x. f₁ x -> f₃ x
+          η' x = η₂ (η₁ x)
+          {-# INLINE η' #-}
+      in Hiσ (NT η') coalg
+    Hio (NT η₁) ->
+      let η' :: forall x. f₁ x -> f₃ x
+          η' x = η₂ (η₁ x)
+          {-# INLINE η' #-}
+          in Hio (NT η')
   {-# INLINE (∘) #-}
 
 -- Hylo-AnaFusionF

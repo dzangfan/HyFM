@@ -39,6 +39,7 @@ newtype SndF f a b = SndF (a, f b)
 instance (Monad m, Distributive f m) =>
   Distributive (SndF f a) m where
   dist (SndF (a, fb)) = SndF . (a,) <$> dist fb
+  {-# INLINE dist #-}
 
 memohylo :: (Ord a, Letable v b r, IsHylo h f a b)
          => h
@@ -50,3 +51,4 @@ memohylo h = HMφψ (AlgM φ') (CoalgM ψ')
         ψ' a = return (SndF (a, ψ a))
         φ' (SndF (a, fb)) =
           mkVar <$> memo a (genlet (φ fb))
+{-# INLINE memohylo #-}

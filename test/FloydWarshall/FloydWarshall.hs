@@ -27,6 +27,7 @@ data Path v x = KIsZero (Weight v) | KIsPos x x x
   deriving (Functor, Foldable, Traversable)
 instance Monad m => Distributive (Path v) m where
   dist = sequence
+  {-# INLINE dist #-}
 
 fwAna :: forall v. Matrix (Weight v)
   -> Hylo Fix (Path v) (Path v) (Coalg (Int, Int, Int))
@@ -41,7 +42,7 @@ fwAna mat = ana ψ
 
 fwCata :: forall v. Hylo (BAlg Identity (Term v)) (Path v) (Path v) Fix
 fwCata = bcata τ
-  where τ φ path = case path of
+  where τ φ = \case
           KIsZero WeightInf  -> φ Inf
           KIsZero (Weight v) -> φ (Var v)
           KIsPos ij ik kj    -> φ (Min ij (φ (ik `Add` kj)))
@@ -63,20 +64,19 @@ termPE :: forall v.
        Fix
 termPE = bcataF τ
   where
-    τ φ term =
-      case term of
-        Var v -> φ . Var <$> v
-        Lam h -> Dy (φ (Lam (\v -> liftPE φ $ h (DyAtom v))))
-        Let StInf h -> h StInf
-        Let (DyAtom v) h -> h (DyAtom v)
-        Let (Dy x) h -> Dy (φ (Let x (\v -> liftPE φ (h (DyAtom v)))))
-        Inf -> StInf
-        Min StInf x -> x
-        Min x StInf -> x
-        Min x y -> Dy (φ (Min (liftPE φ x) (liftPE φ y)))
-        Add StInf _ -> StInf
-        Add _ StInf -> StInf
-        Add x y -> Dy (φ (Add (liftPE φ x) (liftPE φ y)))
+    τ φ = \case
+      Var v -> φ . Var <$> v
+      Lam h -> Dy (φ (Lam (\v -> liftPE φ $ h (DyAtom v))))
+      Let StInf h -> h StInf
+      Let (DyAtom v) h -> h (DyAtom v)
+      Let (Dy x) h -> Dy (φ (Let x (\v -> liftPE φ (h (DyAtom v)))))
+      Inf -> StInf
+      Min StInf x -> x
+      Min x StInf -> x
+      Min x y -> Dy (φ (Min (liftPE φ x) (liftPE φ y)))
+      Add StInf _ -> StInf
+      Add _ StInf -> StInf
+      Add x y -> Dy (φ (Add (liftPE φ x) (liftPE φ y)))
     {-# INLINE τ #-}
 {-# INLINE termPE #-}
 
@@ -230,6 +230,7 @@ fwCompφ₃ :: Term (PE (Q Exp) (Q Exp)) (Compose Identity (PE (Q Exp)) (Q Exp))
   -> Compose Identity (PE (Q Exp)) (Q Exp)
 fwCompφ₃ = liftAlg (Compose . Identity, runIdentity . getCompose) φ
   where (Alg φ, _) = unHylo fwCompH₃
+{-# INLINE fwCompφ₃ #-}
 
 -- compile, NF ------------------------------------------
 fwComp₄ :: Matrix (Weight (PE (Q Exp) (Q Exp)))
@@ -257,6 +258,7 @@ fwCompPE₄ = runHylo fwCompH₃
 
 fwCompφ₄ :: Term (PE (Q Exp) (Q Exp)) (PE (Q Exp) (Q Exp)) -> PE (Q Exp) (Q Exp)
 (Alg fwCompφ₄, _) = unHylo fwCompH₃
+{-# INLINE fwCompφ₄ #-}
 
 -- compile, F ---------------------------------------------------
 fwStat₃ :: Matrix (Weight (PE () ()))
@@ -287,6 +289,7 @@ fwStatφ₃ :: Term (PE () ()) (Compose Identity (PE ()) (Int, Int))
   -> Compose Identity (PE ()) (Int, Int)
 fwStatφ₃ = liftAlg (Compose . Identity, runIdentity . getCompose) φ
   where (Alg φ, _) = unHylo fwStatH₃
+{-# INLINE fwStatφ₃ #-}
 
 -- count, NF --------------------------------------------
 fwStat₄ :: Matrix (Weight (PE () ()))
@@ -314,6 +317,7 @@ fwStatPE₄ = runHylo fwStatH₃
 
 fwStatφ₄ :: Term (PE () ()) (PE () (Int, Int)) -> PE () (Int, Int)
 (Alg fwStatφ₄, _) = unHylo fwStatH₃
+{-# INLINE fwStatφ₄ #-}
 
 -- Triggering compiler/counter -------------------------
 
