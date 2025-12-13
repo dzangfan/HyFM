@@ -155,7 +155,7 @@ test-suite HyFM-FW-BenSt1
     hs-source-dirs:   test/FloydWarshall
     main-is:          BenSt1.hs
     build-depends:
-        base >=4.17.2.1,
+        base >=4.17.2.1 && <5,
         HyFM,
         template-haskell ^>=2.19.0.0,
         vector ^>=0.13.2.0,

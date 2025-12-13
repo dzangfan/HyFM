@@ -14,7 +14,7 @@ main = defaultMain
     , bench "NF" (nfIO (measureExp $ compile mat1 st1 fwComp₂)) ]
   , bgroup "mat2"
     [ bench "F"  (nfIO (measureExp $ compile mat2 st2 fwComp₁))
-    , bench "NF" (nfIO (measureExp $ compile mat3 st3 fwComp₂)) ]
+    , bench "NF" (nfIO (measureExp $ compile mat2 st2 fwComp₂)) ]
   , bgroup "mat3"
     [ bench "F"  (nfIO (measureExp $ compile mat3 st3 fwComp₁))
     , bench "NF" (nfIO (measureExp $ compile mat3 st3 fwComp₂)) ]
