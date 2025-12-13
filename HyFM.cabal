@@ -24,8 +24,8 @@ library
         Data.Functor.HyFM.Memo
     build-depends:
         base >=4.17.2.1,
-        transformers ^>=0.6.2.0,
-        containers ^>=0.7
+        transformers >=0.6.2.0 && <1,
+        containers >=0.7 && <1
     hs-source-dirs:   src
     default-language: GHC2021
     ghc-options: -O2
@@ -46,11 +46,11 @@ test-suite HyFM-FW-TestSt0
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
-        hspec ^>=2.11.14
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
+        hspec >=2.11.14 && <3
 
 test-suite HyFM-FW-BenSt0PrStat
     import:           warnings, test-opts
@@ -64,10 +64,10 @@ test-suite HyFM-FW-BenSt0PrStat
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
         criterion
 
 test-suite HyFM-FW-BenSt0PrComp
@@ -82,10 +82,10 @@ test-suite HyFM-FW-BenSt0PrComp
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
         criterion
 
 test-suite HyFM-FW-BenSt0MonStat
@@ -100,10 +100,10 @@ test-suite HyFM-FW-BenSt0MonStat
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
         criterion
 
 test-suite HyFM-FW-BenSt0MonComp
@@ -118,10 +118,10 @@ test-suite HyFM-FW-BenSt0MonComp
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
         criterion
 
 test-suite HyFM-FW-TestSt1
@@ -137,12 +137,12 @@ test-suite HyFM-FW-TestSt1
     build-depends:
         base >=4.17.2.1,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
-        hspec ^>=2.11.14,
-        QuickCheck ^>=2.16.0.0
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
+        hspec >=2.11.14 && <3,
+        QuickCheck >=2.16.0.0 && <3
 
 test-suite HyFM-FW-BenSt1
     import:           warnings, test-opts
@@ -157,8 +157,8 @@ test-suite HyFM-FW-BenSt1
     build-depends:
         base >=4.17.2.1 && <5,
         HyFM,
-        template-haskell ^>=2.19.0.0,
-        vector ^>=0.13.2.0,
-        matrix ^>=0.3.6.4,
-        transformers ^>=0.6.2.0,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
+        matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
         criterion
