@@ -32,7 +32,8 @@ library
 
 common test-opts
     ghc-options: -O2 -ddump-simpl -dsuppress-all -ddump-to-file
-                 -fspecialise-aggressively
+                 -fspecialise-aggressively -fexpose-all-unfoldings
+                 -funfolding-use-threshold=500 -funfolding-creation-threshold=2000
 
 test-suite HyFM-FW-TestSt0
     import:           warnings, test-opts
@@ -160,5 +161,19 @@ test-suite HyFM-FW-BenSt1
         template-haskell >=2.19.0.0 && <3,
         vector >=0.13.2.0 && <1,
         matrix >=0.3.6.4 && <1,
+        transformers >=0.6.2.0 && <1,
+        criterion
+
+test-suite HyFM-Arithmetic
+    import:           warnings, test-opts
+    default-language: GHC2021
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Arithmetic.hs
+    build-depends:
+        base >=4.17.2.1,
+        HyFM,
+        template-haskell >=2.19.0.0 && <3,
+        vector >=0.13.2.0 && <1,
         transformers >=0.6.2.0 && <1,
         criterion

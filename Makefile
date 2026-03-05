@@ -44,3 +44,8 @@ benSt1:
 	mkdir -p $(BENCHDIR)
 	cabal test HyFM-FW-BenSt1 \
 	--test-options="--output=$(BENCHDIR)/BenSt1.html"
+
+arithmetic:
+	mkdir -p $(BENCHDIR)
+	cabal test HyFM-Arithmetic \
+	--test-options="--output=$(BENCHDIR)/Arithemtic.html"
